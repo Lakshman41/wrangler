@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * Class description here.
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public class Properties implements Token {
   private Map<String, Token> values;
 

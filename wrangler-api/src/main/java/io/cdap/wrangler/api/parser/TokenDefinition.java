@@ -38,7 +38,7 @@ import java.io.Serializable;
  * <p>As this class is immutable, the constructor requires all the member variables to be presnted
  * for an instance of this object to be created.</p>
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public final class TokenDefinition implements Serializable {
   private final int ordinal;
   private final boolean optional;

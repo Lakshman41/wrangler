@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
  * @param <I> type of input object
  * @param <O> type of output object
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public interface Executor<I, O> extends Serializable {
   /**
    * This method provides a way for the custom directive writer the ability to access

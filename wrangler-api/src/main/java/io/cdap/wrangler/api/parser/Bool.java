@@ -42,7 +42,7 @@ import io.cdap.wrangler.api.annotations.PublicEvolving;
  * @see TextList
  * @see Identifier
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public class Bool implements Token {
   /**
    * The {@code Boolean} object that represents the value held by the token.

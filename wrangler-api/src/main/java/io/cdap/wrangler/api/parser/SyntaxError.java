@@ -25,7 +25,7 @@ import io.cdap.wrangler.api.annotations.PublicEvolving;
  * <p>It contains the line number, character position, the error message and the
  * source line that has errors.</p>
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public final class SyntaxError {
   private final int lineNo;
   private final int charPos;

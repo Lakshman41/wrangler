@@ -25,7 +25,7 @@ import java.util.Iterator;
  *
  * @param <T> The type of iterator data.
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public abstract class SamplingIterator<T> implements Iterator<T> {
   @Override
   public void remove() {

@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Class description here.
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public class NumericList implements Token {
   private final List<LazyNumber> values;
 

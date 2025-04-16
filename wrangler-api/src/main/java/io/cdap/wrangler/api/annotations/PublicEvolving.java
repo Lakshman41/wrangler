@@ -36,4 +36,6 @@ import java.lang.annotation.Target;
 @Public
 public @interface PublicEvolving {
 
+    boolean deprecated();
+
 }

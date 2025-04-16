@@ -31,7 +31,7 @@ import java.io.Serializable;
  * <p>It also provides method for providing the {@code JsonElement} of implementation
  * of this interface.</p>
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public interface Token extends Serializable {
   /**
    * Returns the {@code value} of the object wrapped by the

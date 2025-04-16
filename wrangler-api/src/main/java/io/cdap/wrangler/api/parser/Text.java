@@ -23,7 +23,7 @@ import io.cdap.wrangler.api.annotations.PublicEvolving;
 /**
  * Class description here.
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public class Text implements Token {
   private String value;
 

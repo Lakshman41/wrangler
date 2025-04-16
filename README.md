@@ -18,7 +18,7 @@ are manually created.
   * The Data Prep Transform is [separately documented](wrangler-transform/wrangler-docs/data-prep-transform.md).
   * [Data Prep Cheatsheet](wrangler-docs/cheatsheet.md)
 
-## New Features
+## Feature Enhancements
 
 More [here](wrangler-docs/upcoming-features.md) on upcoming features.
 
@@ -30,6 +30,11 @@ More [here](wrangler-docs/upcoming-features.md) on upcoming features.
 
   * A new capability that allows CDAP Administrators to **restrict the directives** that are accessible to their users.
 More information on configuring can be found [here](wrangler-docs/exclusion-and-aliasing.md)
+
+  * **Byte Size and Time Duration Parsing:** Wrangler core has been enhanced to understand common byte size and time duration units within directive arguments when using positional argument syntax.
+      *   **Byte Sizes:** Values like `"10KB"`, `"1.5MB"`, `"512b"`, `"2GiB"` can now be parsed directly by directives expecting a byte size argument positionally. The units (B, KB, MB, GB, TB, PB - case-insensitive) are automatically converted to a canonical byte value (long). Note: Uses 1024-based units (KiB, MiB, etc.).
+      *   **Time Durations:** Values like `"500ms"`, `"2.5s"`, `"100us"`, `"2h"`, `"3min"` can be parsed directly by directives expecting a time duration argument positionally. The units (ns, us, ms, s, min, h - case-insensitive) are automatically converted to a canonical nanosecond value (long).
+
 
 ## Demo Videos and Recipes
 
@@ -127,7 +132,7 @@ These directives are currently available:
 | **Hashing & Masking**                                                  |                                                                  |
 | [Message Digest or Hash](wrangler-docs/directives/hash.md)                      | Generates a message digest                                       |
 | [Mask Number](wrangler-docs/directives/mask-number.md)                          | Applies substitution masking on the column values                |
-| [Mask Shuffle](wrangler-docs/directives/mask-shuffle.md)                        | Applies shuffle masking on the column values                     |
+| [Mask Shuffle](wrangler-docs/directives/mask-shuffle.md)                      | Applies shuffle masking on the column values                     |
 | **Row Operations**                                                     |                                                                  |
 | [Filter Row if Matched](wrangler-docs/directives/filter-row-if-matched.md)      | Filters rows that match a pattern for a column                                         |
 | [Filter Row if True](wrangler-docs/directives/filter-row-if-true.md)            | Filters rows if the condition is true.                                                  |
@@ -157,6 +162,7 @@ These directives are currently available:
 | **Transient Aggregators & Setters**                                    |                                                                  |
 | [Increment Variable](wrangler-docs/directives/increment-variable.md)            | Increments a transient variable with a record of processing.     |
 | [Set Variable](wrangler-docs/directives/set-variable.md)                        | Sets a transient variable with a record of processing.     |
+| `aggregate-stats`                                                      | Aggregates byte size and time duration columns, calculating total bytes (Long) and average nanoseconds (Double). Outputs a single summary row. |
 | **Functions**                                                          |                                                                  |
 | [Data Quality](wrangler-docs/functions/dq-functions.md)                         | Data quality check functions. Checks for date, time, etc.        |
 | [Date Manipulations](wrangler-docs/functions/date-functions.md)                 | Functions that can manipulate date                               |
@@ -164,55 +170,54 @@ These directives are currently available:
 | [JSON](wrangler-docs/functions/json-functions.md)                               | Functions that can be useful in transforming your data           |
 | [Types](wrangler-docs/functions/type-functions.md)                              | Functions for detecting the type of data                         |
 
-## Performance
+## Directive Details
 
-Initial performance tests show that with a set of directives of high complexity for
-transforming data, *DataPrep* is able to process at about ~106K records per second. The
-rates below are specified as *records/second*. 
+### aggregate-stats
 
-| Directive Complexity | Column Count |    Records |           Size | Mean Rate |
-| -------------------- | :----------: | ---------: | -------------: | --------: |
-| High (167 Directives) |      426      | 127,946,398 |  82,677,845,324 | 106,367.27 |
-| High (167 Directives) |      426      | 511,785,592 | 330,711,381,296 | 105,768.93 |
+Calculates aggregate statistics for byte size and time duration columns across all input rows.
 
+**Syntax:**
 
-## Contact
+```wrangler
+aggregate-stats <size-column> <time-column> <total-bytes-column> <avg-nanos-column>;
 
-### Mailing Lists
+## `aggregate-stats` Directive
 
-CDAP User Group and Development Discussions:
+The `aggregate-stats` directive aggregates byte size and time duration values from input columns and outputs a single row with summary statistics.
 
-* [cdap-user@googlegroups.com](https://groups.google.com/d/forum/cdap-user)
+### **Arguments**
 
-The *cdap-user* mailing list is primarily for users using the product to develop
-applications or building plugins for appplications. You can expect questions from
-users, release announcements, and any other discussions that we think will be helpful
-to the users.
+- `<size-column>` (`ColumnName`):  
+  The input column containing byte size values (e.g., `"10KB"`, `"1.5MB"`).  
+  ⚠️ **Note**: Use simple or generic column names (e.g., `:data`, `:col1`) rather than names like `:size` due to parser limitations.
 
-### IRC Channel
+- `<time-column>` (`ColumnName`):  
+  The input column containing time duration values (e.g., `"500ms"`, `"2.5s"`).  
+  ⚠️ **Note**: Same naming recommendations as `<size-column>`.
 
-CDAP IRC Channel: [#cdap on irc.freenode.net](http://webchat.freenode.net?channels=%23cdap)
+- `<total-bytes-column>` (`ColumnName`):  
+  The name of the output column that will contain the **sum of all valid byte sizes**, represented as a `Long` (total bytes).
 
-### Slack Team
+- `<avg-nanos-column>` (`ColumnName`):  
+  The name of the output column that will contain the **average of all valid time durations**, represented as a `Double` (average nanoseconds).
 
-CDAP Users on Slack: [cdap-users team](https://cdap-users.herokuapp.com)
+---
 
+### **Output**
 
-## License and Trademarks
+A single row containing:
+- The specified target columns:
+  - `total-bytes-column` (`Long`)
+  - `avg-nanos-column` (`Double`)
+- `aggregate_count` (`Long`): total number of input rows processed
 
-Copyright © 2016-2019 Cask Data, Inc.
+⚠️ Rows with `null` or unparseable values in the source columns are **skipped** for the respective aggregation **but included** in the overall count.
 
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
-in compliance with the License. You may obtain a copy of the License at
+---
 
-http://www.apache.org/licenses/LICENSE-2.0
+### **Example**
 
-Unless required by applicable law or agreed to in writing, software distributed under the
-License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
-either express or implied. See the License for the specific language governing permissions
-and limitations under the License.
+Assume input rows have columns `bytes_in` (e.g., `"1MB"`) and `latency` (e.g., `"150ms"`):
 
-Cask is a trademark of Cask Data, Inc. All rights reserved.
-
-Apache, Apache HBase, and HBase are trademarks of The Apache Software Foundation. Used with
-permission. No endorsement by The Apache Software Foundation is implied by the use of these marks.
+```wrangler
+aggregate-stats :bytes_in :latency :total_transfer_bytes :average_latency_ns;

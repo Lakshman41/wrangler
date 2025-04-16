@@ -30,7 +30,7 @@ import java.io.ObjectOutputStream;
  *
  * @param <T> type of object to serialize
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public final class ObjectSerDe<T> {
 
   /**

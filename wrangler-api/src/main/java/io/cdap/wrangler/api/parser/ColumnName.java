@@ -23,7 +23,7 @@ import io.cdap.wrangler.api.annotations.PublicEvolving;
 /**
  *
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public class ColumnName implements Token {
   private String value;
 

@@ -24,7 +24,7 @@ import io.cdap.wrangler.api.annotations.PublicEvolving;
 /**
  * Class description here.
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public class Numeric implements Token {
   private final LazyNumber value;
 

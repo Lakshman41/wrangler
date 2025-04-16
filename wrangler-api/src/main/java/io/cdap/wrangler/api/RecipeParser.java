@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * A specification for how {@link RecipePipeline} will process.
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public interface RecipeParser {
   /**
    * Generates a configured set of {@link Executor} to be executed.

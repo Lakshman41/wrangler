@@ -21,7 +21,7 @@ import io.cdap.wrangler.api.annotations.PublicEvolving;
 /**
  * This class {@link SamplingMethod} defines different types of sampling methods available.
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public enum SamplingMethod {
   NONE("none"),
   FIRST("first"),

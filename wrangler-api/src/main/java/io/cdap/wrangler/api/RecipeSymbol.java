@@ -43,7 +43,7 @@ import java.util.TreeSet;
  * in the <code>RecipeVisitor</code>. The <code>RecipeVisitor</code>
  * constructs <code>RecipeSymbol</code> using the <code>RecipeSymbol.Builder</code></p>
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public final class RecipeSymbol {
   /**
    * Version if specified, else defaults to 1.0

@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Class description here.
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public class TextList implements Token {
   private List<String> values;
 

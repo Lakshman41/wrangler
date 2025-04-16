@@ -27,7 +27,7 @@ import java.util.Map;
 /**
  * Pipeline Context for passing contextual information to the pipeline being executed.
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public interface ExecutorContext extends LookupProvider, Serializable {
   /**
    * Specifies the environment in which wrangler is running.

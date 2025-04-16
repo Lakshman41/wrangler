@@ -16,12 +16,14 @@
 
 package io.cdap.wrangler.parser;
 
+// Group 1: Non-java/javax imports (Sorted Alphabetically)
 import io.cdap.wrangler.api.LazyNumber;
 import io.cdap.wrangler.api.RecipeSymbol;
 import io.cdap.wrangler.api.SourceInfo;
 import io.cdap.wrangler.api.Triplet;
 import io.cdap.wrangler.api.parser.Bool;
 import io.cdap.wrangler.api.parser.BoolList;
+import io.cdap.wrangler.api.parser.ByteSize;
 import io.cdap.wrangler.api.parser.ColumnName;
 import io.cdap.wrangler.api.parser.ColumnNameList;
 import io.cdap.wrangler.api.parser.DirectiveName;
@@ -33,16 +35,20 @@ import io.cdap.wrangler.api.parser.Properties;
 import io.cdap.wrangler.api.parser.Ranges;
 import io.cdap.wrangler.api.parser.Text;
 import io.cdap.wrangler.api.parser.TextList;
+import io.cdap.wrangler.api.parser.TimeDuration;
 import io.cdap.wrangler.api.parser.Token;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.Interval;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+// Group 2: java/javax imports (Sorted Alphabetically)
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+// Group 3: Static imports (None here)
 
 /**
  * This class <code>RecipeVisitor</code> implements the visitor pattern
@@ -82,10 +88,14 @@ public final class RecipeVisitor extends DirectivesBaseVisitor<RecipeSymbol.Buil
    * Directive. This method is invoked on every visit to a new directive in the recipe.
    */
   @Override
-  public RecipeSymbol.Builder visitDirective(DirectivesParser.DirectiveContext ctx) {
-    builder.createTokenGroup(getOriginalSource(ctx));
-    return super.visitDirective(ctx);
-  }
+    public RecipeSymbol.Builder visitDirective(DirectivesParser.DirectiveContext ctx) {
+        // String directiveName = ctx.command().getText(); // No longer needed here
+        // <<< CORRECTED: Call createTokenGroup with only SourceInfo >>>
+        builder.createTokenGroup(getOriginalSource(ctx));
+        // Visit children (positional arguments in this simplified version)
+        super.visitDirective(ctx);
+        return builder;
+    }
 
   /**
    * A Directive can include identifiers, this method extracts that token that is being
@@ -326,4 +336,32 @@ public final class RecipeVisitor extends DirectivesBaseVisitor<RecipeSymbol.Buil
     int column = ctx.getStart().getCharPositionInLine();
     return new SourceInfo(lineno, column, text);
   }
+
+  @Override
+    public RecipeSymbol.Builder visitByteSizeArg(DirectivesParser.ByteSizeArgContext ctx) {
+        String rawByteSize = ctx.getText();
+        try {
+            ByteSize byteSizeToken = new ByteSize(rawByteSize);
+            builder.addToken(byteSizeToken);
+        } catch (IllegalArgumentException e) {
+             throw new RuntimeException("Error parsing byte size '" + rawByteSize +
+                                       "' near line " + ctx.getStart().getLine() +
+                                       ": " + e.getMessage(), e);
+        }
+        return builder;
+    }
+
+    @Override
+    public RecipeSymbol.Builder visitTimeDurationArg(DirectivesParser.TimeDurationArgContext ctx) {
+         String rawTimeDuration = ctx.getText();
+        try {
+            TimeDuration timeDurationToken = new TimeDuration(rawTimeDuration);
+            builder.addToken(timeDurationToken);
+        } catch (IllegalArgumentException e) {
+             throw new RuntimeException("Error parsing time duration '" + rawTimeDuration +
+                                        "' near line " + ctx.getStart().getLine() +
+                                        ": " + e.getMessage(), e);
+        }
+         return builder;
+    }
 }

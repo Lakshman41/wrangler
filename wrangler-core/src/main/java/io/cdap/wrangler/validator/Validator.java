@@ -23,7 +23,7 @@ import io.cdap.wrangler.api.annotations.PublicEvolving;
  *
  * @param <T> type of object to validate
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public interface Validator<T> {
   /**
    * Initializes the validator.

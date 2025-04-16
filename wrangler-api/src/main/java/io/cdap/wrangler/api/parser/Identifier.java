@@ -41,7 +41,7 @@ import io.cdap.wrangler.api.annotations.PublicEvolving;
  * @see Text
  * @see TextList
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public class Identifier implements Token {
   /**
    * The {@code String} object that represents the value held by the token.

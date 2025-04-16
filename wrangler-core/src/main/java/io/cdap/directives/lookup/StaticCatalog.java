@@ -23,7 +23,7 @@ import java.io.Serializable;
 /**
  * Interface for defining different kinds of catalog.
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public interface StaticCatalog extends Serializable {
   /**
    * Configures a catalog.

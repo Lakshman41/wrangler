@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Class description here.
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public class Ranges implements Token {
   private final List<Triplet<Numeric, Numeric, String>> values;
 

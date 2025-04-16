@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * Interface for calculating metrics over the records being processed.
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public interface Statistics {
   /**
    * Aggregates statistics for all the rows.

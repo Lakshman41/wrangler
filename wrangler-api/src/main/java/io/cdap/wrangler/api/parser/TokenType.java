@@ -41,7 +41,7 @@ import java.io.Serializable;
  * @see Text
  * @see TextList
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public enum TokenType implements Serializable {
   /**
    * Represents the enumerated type for the object {@code DirectiveName} type.
@@ -152,5 +152,14 @@ public enum TokenType implements Serializable {
    * Represents the enumerated type for the object of type {@code String} with restrictions
    * on characters that can be present in a string.
    */
-  IDENTIFIER
+  IDENTIFIER,
+
+  BYTE_SIZE, // <<< ADDED
+
+  /**
+   * Represents the enumerated type for the object of type {@code TimeDuration}.
+   * This type is associated with tokens representing time durations with units
+   * like ns, ms, s, min, h. e.g., "500ms", "2.5h".
+   */
+  TIME_DURATION // <<< ADDED (No comma after the last constant)
 }

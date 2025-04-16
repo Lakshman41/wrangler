@@ -46,7 +46,7 @@ import java.util.List;
  * @see Text
  * @see TextList
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public class BoolList implements Token {
   /**
    * The {@code List<Boolean>} object that represents the value held by the token.

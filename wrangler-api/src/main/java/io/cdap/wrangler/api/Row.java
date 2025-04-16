@@ -26,7 +26,7 @@ import java.util.Objects;
 /**
  * Row defines the schema and data on which the wrangler will operate upon.
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public final class Row implements Serializable {
   private static final long serialVersionUID = -7505703059736709602L;
 

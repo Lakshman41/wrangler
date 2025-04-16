@@ -28,7 +28,7 @@ import java.util.Iterator;
  *
  * @param <T> type of element to sample
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public abstract class Sampler<T> {
   protected static final double EPSILON = 1e-5;
 

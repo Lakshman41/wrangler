@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Class description here.
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public class ColumnNameList implements Token {
   private List<String> values = new ArrayList<>();
 

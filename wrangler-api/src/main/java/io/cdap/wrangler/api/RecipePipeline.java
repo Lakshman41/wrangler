@@ -29,7 +29,7 @@ import java.util.List;
  * @param <O> type of output object
  * @param <E> type of error object
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public interface RecipePipeline<I, O, E> extends Serializable, AutoCloseable {
 
   /**

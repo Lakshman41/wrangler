@@ -33,7 +33,7 @@ import java.nio.file.Path;
  * contains the compiled directives in the form of <code>Executor</code> or
  * iterator of <code>SyntaxError</code> in case of failure to compile.</p>
  */
-@PublicEvolving
+@PublicEvolving(deprecated = false)
 public interface Compiler {
   /**
    * Compiles the recipe that is supplied in a <code>String</code> format.
