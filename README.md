@@ -180,40 +180,22 @@ Calculates aggregate statistics for byte size and time duration columns across a
 
 ```wrangler
 aggregate-stats <size-column> <time-column> <total-bytes-column> <avg-nanos-column>;
+**Arguments:**
 
-## `aggregate-stats` Directive
+*   `<size-column>` (ColumnName): The input column containing byte size values (e.g., `"10KB"`, `"1.5MB"`). **Note:** Due to current parser limitations, it is recommended to use simple or generic column names (e.g., `:data`, `:col1`) rather than names like `:size` which might cause parsing issues.
+*   `<time-column>` (ColumnName): The input column containing time duration values (e.g., `"500ms"`, `"2.5s"`). Similar naming recommendations apply as for `<size-column>`.
+*   `<total-bytes-column>` (ColumnName): The name of the output column that will contain the sum of all valid byte sizes, represented as a Long (total bytes).
+*   `<avg-nanos-column>` (ColumnName): The name of the output column that will contain the average of all valid time durations, represented as a Double (average nanoseconds).
 
-The `aggregate-stats` directive aggregates byte size and time duration values from input columns and outputs a single row with summary statistics.
+**Output:**
 
-### **Arguments**
+This directive outputs a single row containing the specified target columns with the calculated aggregates, plus an `aggregate_count` column (Long) showing the total number of input rows processed. Rows with null or unparseable values in the source columns are skipped for the respective aggregation but included in the overall count.
 
-- `<size-column>` (`ColumnName`):  
-  The input column containing byte size values (e.g., `"10KB"`, `"1.5MB"`).  
-  ⚠️ **Note**: Use simple or generic column names (e.g., `:data`, `:col1`) rather than names like `:size` due to parser limitations.
+**Example:**
 
-- `<time-column>` (`ColumnName`):  
-  The input column containing time duration values (e.g., `"500ms"`, `"2.5s"`).  
-  ⚠️ **Note**: Same naming recommendations as `<size-column>`.
-
-- `<total-bytes-column>` (`ColumnName`):  
-  The name of the output column that will contain the **sum of all valid byte sizes**, represented as a `Long` (total bytes).
-
-- `<avg-nanos-column>` (`ColumnName`):  
-  The name of the output column that will contain the **average of all valid time durations**, represented as a `Double` (average nanoseconds).
-
----
-
-### **Output**
-
-A single row containing:
-- The specified target columns:
-  - `total-bytes-column` (`Long`)
-  - `avg-nanos-column` (`Double`)
-- `aggregate_count` (`Long`): total number of input rows processed
-
-⚠️ Rows with `null` or unparseable values in the source columns are **skipped** for the respective aggregation **but included** in the overall count.
-
----
+```wrangler
+# Assume input rows have columns 'bytes_in' (e.g., "1MB") and 'latency' (e.g., "150ms")
+aggregate-stats :bytes_in :latency :total_transfer_bytes :average_latency_ns;
 
 ### **Example**
 
