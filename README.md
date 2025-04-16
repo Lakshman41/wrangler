@@ -171,14 +171,11 @@ These directives are currently available:
 | [Types](wrangler-docs/functions/type-functions.md)                              | Functions for detecting the type of data                         |
 
 ## Directive Details
-
-## `aggregate-stats` Directive
-
-```wrangler
-aggregate-stats <size-column> <time-column> <total-bytes-column> <avg-nanos-column>;
 Calculates aggregate statistics for byte size and time duration columns across all input rows.
 
 **Syntax:**
+
+## `aggregate-stats` Directive
 
 ```wrangler
 aggregate-stats <size-column> <time-column> <total-bytes-column> <avg-nanos-column>;
