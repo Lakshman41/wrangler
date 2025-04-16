@@ -170,7 +170,8 @@ These directives are currently available:
 | [JSON](wrangler-docs/functions/json-functions.md)                               | Functions that can be useful in transforming your data           |
 | [Types](wrangler-docs/functions/type-functions.md)                              | Functions for detecting the type of data                         |
 
-## Directive Details
+### aggregate-stats
+
 Calculates aggregate statistics for byte size and time duration columns across all input rows.
 
 **Syntax:**
